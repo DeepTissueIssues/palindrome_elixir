@@ -22,9 +22,5 @@ defmodule Drom do
   defp is_palindrome(str) when is_bitstring(str) do
     String.reverse(str) == str
   end
-
-  defp is_palindrome(str) when is_list(str) do
-    Enum.join(str) |> is_palindrome
-  end
 end
 
