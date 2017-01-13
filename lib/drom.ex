@@ -50,7 +50,6 @@ defmodule Drom do
   defp last_found(found) when is_list(found) and length(found) == 0, do: ""
   defp last_found([head|_]), do: head
 
-  # a palindrome is at least 3 characters
   defp is_palindrome(str) when byte_size(str) < @min_palindrome_len do
     {false, :too_short}
   end
