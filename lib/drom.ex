@@ -4,7 +4,7 @@ defmodule Drom do
     find_palindrome(str, 0, String.length(str) - 1)
   end
 
-  def find_palindrome(str, current_position, scan_len) do
+  defp find_palindrome(str, current_position, scan_len) do
     end_position = current_position + scan_len
     scanned_substr = String.slice(str, current_position..end_position)
 
