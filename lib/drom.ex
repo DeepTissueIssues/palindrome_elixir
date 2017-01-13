@@ -4,6 +4,10 @@ defmodule Drom do
     find_palindrome(str, 0, String.length(str) - 1)
   end
 
+  defp find_palindrome(str, current_position, scan_len)
+    when (scan_len != byte_size(str) - 1) and ((current_position + scan_len) >= byte_size(str) - 1),
+    do: find_palindrome(str, 0, scan_len - 1)
+
   defp find_palindrome(str, current_position, scan_len) do
     end_position = current_position + scan_len
     scanned_substr = String.slice(str, current_position..end_position)
