@@ -1,6 +1,12 @@
 defmodule Drom do
   @min_palindrome_len 3
 
+  defmacro substr_too_short(current_pos, end_pos, longest) do
+    quote do
+      (unquote(end_pos) - unquote(current_pos) + 1) < unquote(longest)
+    end
+  end
+
   def find(nil), do: nil
   def find(str) when is_bitstring(str) do
     _find(str, 0, byte_size(str) - 1, [], 0)
@@ -8,14 +14,16 @@ defmodule Drom do
 
   # no way there are more palindromes long enough
   # the next node down is useless, back out of this branch and start a new branch
+  # `and end_pos + 1 < longest`
   defp _find(_str, current_pos, end_pos, found, longest)
     when current_pos == 0
-    and  end_pos + 1 < longest,
+    and substr_too_short(current_pos, end_pos, longest),
     do: found
 
+  # and  (end_pos - current_pos + 1) < longest,
   defp _find(str, current_pos, end_pos, found, longest)
     when current_pos != 0
-    and  (end_pos - current_pos + 1) < longest,
+    and substr_too_short(current_pos, end_pos, longest),
     do: _find(str, 0, end_pos - 1, found, longest)
 
   defp _find(str, current_pos, end_pos, found, longest) do

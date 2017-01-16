@@ -48,9 +48,13 @@ defmodule DromTest do
     str = "abracadabra"
     str1 = "bananaututu"
     str2 = "bcannacututu"
+    str3 = "bututucannaczca22ac"
+    str4 = "bututucannaczca22accananac"
 
     assert Drom.find(str) == ["aca", "ada"]
     assert Drom.find(str1) == ["anana", "ututu"]
     assert Drom.find(str2) == ["cannac"]
+    assert Drom.find(str3) == ["cannac", "ca22ac"]
+    assert Drom.find(str4) == ["cananac"]
   end
 end
