@@ -1,26 +1,34 @@
 defmodule Drom do
   @min_palindrome_len 3
 
+  #######################
+  # custom guard clause #
+  #######################
+
   defmacro substr_too_short(current_pos, end_pos, longest) do
     quote do
       (unquote(end_pos) - unquote(current_pos) + 1) < unquote(longest)
     end
   end
 
+  ##############
+  # public API #
+  ##############
+
   def find(nil), do: nil
   def find(str) when is_bitstring(str) do
-    _find(str, 0, byte_size(str) - 1, [], 0)
+    _find(str, 0, byte_size(str) - 1, [], @min_palindrome_len)
   end
 
-  # no way there are more palindromes long enough
-  # the next node down is useless, back out of this branch and start a new branch
-  # `and end_pos + 1 < longest`
+  ###########
+  # private #
+  ###########
+
   defp _find(_str, current_pos, end_pos, found, longest)
     when current_pos == 0
     and substr_too_short(current_pos, end_pos, longest),
     do: found
 
-  # and  (end_pos - current_pos + 1) < longest,
   defp _find(str, current_pos, end_pos, found, longest)
     when current_pos != 0
     and substr_too_short(current_pos, end_pos, longest),
@@ -30,28 +38,20 @@ defmodule Drom do
     substr = String.slice(str, current_pos..end_pos)
 
     case is_palindrome(substr) do
-      {true, :ok} when byte_size(substr) < longest ->
+      true when byte_size(substr) < longest ->
         found
-      {true, :ok} when byte_size(substr) > longest ->
+      true when byte_size(substr) > longest ->
         _find(str, 0, end_pos - 1, [substr], byte_size(substr))
-      {true, :ok} ->
+      true ->
         _find(str, 0, end_pos - 1, [substr|found], byte_size(substr))
-      {false, :too_short} when end_pos > (@min_palindrome_len - 1) ->
-        _find(str, 0, end_pos - 1, found, longest)
-      {false, :too_short} ->
-        found
-      {false, :ok} ->
+      false ->
         _find(str, current_pos + 1, end_pos, found, longest)
     end
   end
 
   defp is_palindrome(str)
-    when byte_size(str) < @min_palindrome_len,
-    do: {false, :too_short}
-
-  defp is_palindrome(str)
     when is_bitstring(str),
-    do: {String.reverse(str) == str, :ok}
+    do: String.reverse(str) == str
 
   defp debug(str, substr, current_pos, end_pos, found, longest) do
     IO.puts("===================")
