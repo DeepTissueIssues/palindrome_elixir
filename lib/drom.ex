@@ -37,13 +37,13 @@ defmodule Drom do
     end
   end
 
-  defp is_palindrome(str) when byte_size(str) < @min_palindrome_len do
-    {false, :too_short}
-  end
+  defp is_palindrome(str)
+    when byte_size(str) < @min_palindrome_len,
+    do: {false, :too_short}
 
-  defp is_palindrome(str) when is_bitstring(str) do
-    {String.reverse(str) == str, :ok}
-  end
+  defp is_palindrome(str)
+    when is_bitstring(str),
+    do: {String.reverse(str) == str, :ok}
 
   defp debug(str, substr, current_pos, scan_len, found, longest) do
     IO.puts("===================")
