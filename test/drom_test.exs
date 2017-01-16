@@ -47,8 +47,10 @@ defmodule DromTest do
   test "when there are more than one palindrome, find them all" do
     str = "abracadabra"
     str1 = "bananaututu"
+    str2 = "bcannacututu"
 
     assert Drom.find(str) == ["aca", "ada"]
     assert Drom.find(str1) == ["anana", "ututu"]
+    assert Drom.find(str2) == ["cannac"]
   end
 end
