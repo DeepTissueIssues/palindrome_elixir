@@ -1,13 +1,6 @@
 defmodule Drom do
   @min_palindrome_len 3
 
-#   # when length of substr is smaller than longest
-#   defmacro substr_too_short(scan_len, longest) do
-#     quote do
-#       ( unquote(scan_len) + 1 ) < unquote(longest)
-#     end
-#   end
-
   def find(nil), do: nil
   def find(str) when is_bitstring(str) do
     find(str, 0, String.length(str) - 1, [], 0)
